@@ -1,0 +1,57 @@
+﻿@model eCourier.Dto.OrderStatusDto;
+@{
+    ViewData["Title"] = "Status";
+}
+
+<h1>Order Status</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <label>Sender Name</label>
+    </div>
+    <div class="col-md-4">:</div>
+    <div class="col-md-4">
+        <p>@Model.SenderName</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <label>Recipient Name</label>
+    </div>
+    <div class="col-md-4">:</div>
+    <div class="col-md-4">
+        <p>@Model.RecipientName</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <label>Reach Date </label>
+    </div>
+    <div class="col-md-4">:</div>
+    <div class="col-md-4">
+        <p>@Model.ReachDate</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <label>Due Amount</label>
+    </div>
+    <div class="col-md-4">:</div>
+    <div class="col-md-4">
+        <p>@Model.DueAmount</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <label>Status</label>
+    </div>
+    <div class="col-md-4">:</div>
+    <div class="col-md-4">
+        <p>@Model.Status</p>
+    </div>
+</div>
+  
+
+
+
+

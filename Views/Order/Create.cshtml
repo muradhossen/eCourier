@@ -1,0 +1,173 @@
+﻿@model eCourier.Dto.OrderDto
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Order</h4>
+<hr />
+
+     
+        <form asp-action="Create">
+    <div class="row">
+            <div class="col-md-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <h3>Customer Info</h3>
+
+                <div class="form-group">
+                    <label asp-for="Customer.Name" class="control-label"></label>
+                    <input asp-for="Customer.Name" class="form-control" />
+                    <span asp-validation-for="Customer.Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Customer.Phone" class="control-label"></label>
+                    <input asp-for="Customer.Phone" class="form-control" />
+                    <span asp-validation-for="Customer.Phone" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Customer.Email" class="control-label"></label>
+                    <input asp-for="Customer.Email" class="form-control" />
+                    <span asp-validation-for="Customer.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Customer.Address" class="control-label"></label>
+                    <input asp-for="Customer.Address" class="form-control" />
+                    <span asp-validation-for="Customer.Address" class="text-danger"></span>
+                </div>
+
+                <hr />
+
+                <h3>Recipient Info</h3>
+
+                <div class="form-group">
+                    <label asp-for="Recipient.Name" class="control-label"></label>
+                    <input asp-for="Recipient.Name" class="form-control" />
+                    <span asp-validation-for="Recipient.Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Recipient.Phone" class="control-label"></label>
+                    <input asp-for="Recipient.Phone" class="form-control" />
+                    <span asp-validation-for="Recipient.Phone" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Recipient.Email" class="control-label"></label>
+                    <input asp-for="Recipient.Email" class="form-control" />
+                    <span asp-validation-for="Recipient.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Recipient.Address" class="control-label"></label>
+                    <input asp-for="Recipient.Address" class="form-control" />
+                    <span asp-validation-for="Recipient.Address" class="text-danger"></span>
+                </div>
+
+                <hr />
+
+                <h3>Order Info</h3>
+                <div class="form-group">
+                    <label asp-for="ReachDate" class="control-label"></label>
+                    <input asp-for="ReachDate" class="form-control" />
+                    <span asp-validation-for="ReachDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Status" class="control-label"></label>
+                    <input asp-for="Status" class="form-control" />
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TotalAmount" class="control-label"></label>
+                    <input asp-for="TotalAmount" class="form-control" />
+                    <span asp-validation-for="TotalAmount" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DueAmount" class="control-label"></label>
+                    <input asp-for="DueAmount" class="form-control" />
+                    <span asp-validation-for="DueAmount" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PaidAmount" class="control-label"></label>
+                    <input asp-for="PaidAmount" class="form-control" />
+                    <span asp-validation-for="PaidAmount" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+               
+                <h3>Products</h3>
+                <div id="productFields"></div>
+                <br />
+                <button type="button" id="addProductButton" class="btn btn-secondary">Add Product</button>
+
+            </div>
+           
+
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+</div>
+        </form>
+     
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        let productIndex = 0;
+
+        $('#addProductButton').on('click', function () {
+            const productFields = $('#productFields');
+            const productFieldHtml = `
+                                                <div class="product-row">
+                                                    <div class="form-group">
+                                                             <label class="control-label">Name</label>
+                                                        <input type="text" name="Products[${productIndex}].Name" class="form-control"/>
+                                                    </div>
+                                                    
+                                                    <div class="form-group">
+                                                                     <label class="control-label">Description</label>
+                                                                <input type="text" name="Products[${productIndex}].Description" class="form-control"/>
+                                                    </div>
+                                                               
+                                                    <div class="form-group">
+                                                                     <label class="control-label">Height</label>
+                                                                   <input type="text" name="Products[${productIndex}].Height" class="form-control" />
+                                                     </div>
+                                                              
+                                                     <div class="form-group">
+                                                                      <label class="control-label">Width</label>
+                                                                   <input type="text" name="Products[${productIndex}].Width" class="form-control"/>
+                                                     </div>
+                                                          
+                                                     <div class="form-group">
+                                                                      <label class="control-label">Weight</label>
+                                                                   <input type="text" name="Products[${productIndex}].Weight" class="form-control"/>
+                                                     </div>
+                                                    <button class="btn btn-danger remove-product">Remove</button>
+                                                     
+                                                </div>
+                                            `;
+            productFields.append(productFieldHtml);
+            productIndex++;
+        });
+
+        $(document).on('click', '.remove-product', function () {
+            $(this).closest('.product-row').remove();
+        });
+    </script>
+}
+
+ 

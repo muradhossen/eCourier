@@ -1,0 +1,81 @@
+﻿@model eCourier.Helper.PagedList<Customer>
+
+@{
+    ViewData["Title"] = "Index";
+    var customerName = Context.Request.Query["CustomerName"].ToString();
+}
+
+<h1>Customers </h1> 
+
+<form method="get" asp-action="Index">
+    <input type="text" name="customerName" value="@customerName" placeholder="Search...">
+    <button type="submit">Search</button>
+</form>
+
+@if(Model is not null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Address)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Phone)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>                         
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <nav aria-label="...">
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.TotalPage; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@i"
+                       asp-route-pageSize="@Model.PageSize"
+                       asp-route-customerName="@customerName">@i</a>
+                </li>
+            }
+
+
+        </ul>
+    </nav>
+}
+
+
+@if (Model is null || !Model.Any())
+{
+    <h3> No data found!</h3> 
+}

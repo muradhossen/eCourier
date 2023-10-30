@@ -1,0 +1,107 @@
+﻿@model eCourier.Helper.PagedList<Order>
+
+@{
+ 
+    var consignmentNumber = Context.Request.Query["ConsignmentNumber"].ToString();
+
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<form method="get" asp-action="Index">
+    <input type="text" name="ConsignmentNumber" value="@consignmentNumber" placeholder="Search...">
+    <button type="submit">Search</button>
+</form>
+
+@if (Model is not null && Model.Any())
+{
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().ConsignmentNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().PlaceDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().ReachDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().TotalAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().DueAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().PaidAmount)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ConsignmentNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PlaceDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReachDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DueAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaidAmount)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <nav aria-label="...">
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.TotalPage; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@i"
+                       asp-route-pageSize="@Model.PageSize"
+                       asp-route-consignmentNumber="@consignmentNumber">@i</a>
+                </li>
+            }
+
+
+        </ul>
+    </nav>
+}
+
+@if(Model is null || !Model.Any())
+{
+   <h3> No data found!</h3> 
+}
+
+
