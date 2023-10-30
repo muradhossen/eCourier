@@ -1,9 +1,10 @@
 ﻿@model eCourier.Dto.OrderDto
-@inject eCourier.Enums.OrderStatus _orderStatus
+@inject eCourier.Helper.OrderStatus _orderStatus
 
 @{
     ViewData["Title"] = "Create order";
     var status = _orderStatus.GetStatus();
+    bool isInAdminRole = User.IsInRole("Admin");
 }
 
 <h1>Create</h1>
@@ -48,16 +49,17 @@
                 <hr />
 
                 <h3>Order Info</h3>
-                <div class="form-group">
-                    <label asp-for="ReachDate" class="control-label"></label>
-                    <input asp-for="ReachDate" class="form-control" />
-                    <span asp-validation-for="ReachDate" class="text-danger"></span>
-                </div>
+            @if (isInAdminRole)
+            {
+
                 <div class="form-group">
                     <label asp-for="Status" class="control-label"></label>
-                @Html.DropDownListFor(model => model.Status, status, "Select an option", new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.Status, status, "Select an option", new { @class = "form-control" })
                     <span asp-validation-for="Status" class="text-danger"></span>
                 </div>
+            
+            }
+
                 <div class="form-group">
                     <label asp-for="TotalAmount" class="control-label"></label>
                     <input asp-for="TotalAmount" class="form-control" />
@@ -114,17 +116,17 @@
                                                     </div>
                                                                
                                                     <div class="form-group">
-                                                                     <label class="control-label">Height</label>
+                                                                     <label class="control-label">Height(CM)</label>
                                                                    <input type="text" name="Products[${productIndex}].Height" class="form-control" />
                                                      </div>
                                                               
                                                      <div class="form-group">
-                                                                      <label class="control-label">Width</label>
+                                                                              <label class="control-label">Width(CM)</label>
                                                                    <input type="text" name="Products[${productIndex}].Width" class="form-control"/>
                                                      </div>
                                                           
                                                      <div class="form-group">
-                                                                      <label class="control-label">Weight</label>
+                                                                      <label class="control-label">Weight(KG)</label>
                                                                    <input type="text" name="Products[${productIndex}].Weight" class="form-control"/>
                                                      </div>
                                                     <button class="btn btn-danger remove-product">Remove</button>

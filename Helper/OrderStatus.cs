@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Reflection.Metadata.Ecma335;
 
-namespace eCourier.Enums
+namespace eCourier.Helper
 {
-   public class OrderStatus
+    public class OrderStatus
     {
-        public int Value { get; set; }
-        public string Text { get; set; }
+
+        public const int DefaultOrderStatus = 1;
 
         public IEnumerable<SelectListItem> GetStatus()
         {
@@ -19,7 +19,7 @@ namespace eCourier.Enums
         }
 
         public string GetStatusByValue(int value) =>
-            GetStatus().Where(c => c.Value == value.ToString()).FirstOrDefault().Text;
+            GetStatus().Where(c => c.Value == value.ToString()).FirstOrDefault()?.Text;
     }
 
 

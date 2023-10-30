@@ -31,13 +31,13 @@ namespace eCourier.Controllers
             _userManager = userManager;
         }
 
-        [Authorize(Policy = "CustomerOnly")]
+        
         public async Task<IActionResult> Index([FromQuery] OrderCriteriaDto criteriaDto)
         {
 
             criteriaDto.AppUserId = User.IsInRole("Customer") 
                 ? criteriaDto.AppUserId = User.GetUserId() 
-                : throw new Exception("User must be in Customer role!");
+                : null;
 
             var orders = await _orderRepository.GetOrdersByCriteriaAsync(criteriaDto);
             return View(orders);
@@ -59,6 +59,7 @@ namespace eCourier.Controllers
             return View();
         }
 
+        [Authorize(Policy = "CustomerOnly")]
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] OrderDto order)
         {
