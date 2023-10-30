@@ -4,15 +4,19 @@
 @{
 
     var consignmentNumber = Context.Request.Query["ConsignmentNumber"].ToString();
-    bool isInAdminRole = User.IsInRole("Admin");   
+    bool isInAdminRole = User.IsInRole("Admin");
+    bool isInCustomerRole = User.IsInRole("Customer");
 
 }
 
 <h1>Index</h1>
+@if (isInCustomerRole)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 
 <form method="get" asp-action="Index">
     <input type="text" name="ConsignmentNumber" value="@consignmentNumber" placeholder="Search...">
@@ -63,7 +67,7 @@
                         @Html.DisplayFor(modelItem => item.ReachDate)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Status)
+                         @_orderStatus.GetStatusByValue(item.Status)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.TotalAmount)

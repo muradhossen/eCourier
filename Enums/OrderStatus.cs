@@ -8,7 +8,7 @@ namespace eCourier.Enums
         public int Value { get; set; }
         public string Text { get; set; }
 
-        public List<SelectListItem> GetStatus()
+        public IEnumerable<SelectListItem> GetStatus()
         {
             return new List<SelectListItem>()
             {

@@ -6,9 +6,9 @@ using eCourier.Repositories.Abstraction;
 using eCourier.Dto.CriteriaDto;
 using eCourier.Dto;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using eCourier.Extention;
+using System.Drawing.Text;
 
 namespace eCourier.Controllers
 {
@@ -31,10 +31,13 @@ namespace eCourier.Controllers
             _userManager = userManager;
         }
 
+        [Authorize(Policy = "CustomerOnly")]
         public async Task<IActionResult> Index([FromQuery] OrderCriteriaDto criteriaDto)
         {
 
-            criteriaDto.AppUserId = User.IsInRole("Customer") ? criteriaDto.AppUserId = User.GetUserId() : null;
+            criteriaDto.AppUserId = User.IsInRole("Customer") 
+                ? criteriaDto.AppUserId = User.GetUserId() 
+                : throw new Exception("User must be in Customer role!");
 
             var orders = await _orderRepository.GetOrdersByCriteriaAsync(criteriaDto);
             return View(orders);

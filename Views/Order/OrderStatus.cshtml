@@ -1,4 +1,5 @@
 ﻿@model eCourier.Dto.OrderStatusDto;
+@inject eCourier.Enums.OrderStatus _orderStatus
 @{
     ViewData["Title"] = "Status";
 }
@@ -47,7 +48,7 @@
     </div>
     <div class="col-md-4">:</div>
     <div class="col-md-4">
-        <p>@Model.Status</p>
+        <p>@_orderStatus.GetStatusByValue(Model.Status)</p>
     </div>
 </div>
   

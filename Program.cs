@@ -66,17 +66,6 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
-
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    context.Database.Migrate();
-}
-
 
 app.Use(async (context, next) =>
 {
@@ -100,6 +89,20 @@ app.Use(async (context, next) =>
 
     await next(context);
 });
+
+app.UseAuthorization();
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    context.Database.Migrate();
+}
+
+
+
 
 app.MapControllerRoute(
     name: "default",
