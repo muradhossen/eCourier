@@ -9,32 +9,28 @@
 <div>
     <h4>Order</h4>
     <hr />
-
     <h3>Sender Info :</h3>
+
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Customer.Name)
+            @Html.DisplayNameFor(model => model.AppUserUserName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Customer.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Customer.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Customer.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Customer.Phone)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Customer.Phone)
+            @Html.DisplayFor(model => model.AppUserUserName)
         </dd>
 
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppUserEmail)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppUserEmail)
+        </dd>
     </dl>
 
     <h3>Recipient Info :</h3>
     <dl class="row">
+
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Recipient.Name)
         </dt>
@@ -59,45 +55,45 @@
 
     <h3>Order Info :</h3>
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PlaceDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PlaceDate)
         </dd>
 
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ReachDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ReachDate)
         </dd>
 
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Status)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Status)
         </dd>
 
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TotalAmount)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TotalAmount)
         </dd>
 
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DueAmount)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DueAmount)
         </dd>
 
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PaidAmount)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PaidAmount)
         </dd>
 
@@ -114,21 +110,21 @@
                 @Html.DisplayNameFor(model => model.Products.FirstOrDefault().Description)
             </dt>
             <dd class="col-sm-10">
-                 
+
                 @Html.DisplayFor(model => product.Description)
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Products.FirstOrDefault().Height)
             </dt>
             <dd class="col-sm-10">
-                
+
                 @Html.DisplayFor(model => product.Height)
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Products.FirstOrDefault().Width)
             </dt>
             <dd class="col-sm-10">
-                
+
                 @Html.DisplayFor(model => product.Width)
             </dd>
             <dt class="col-sm-2">
@@ -136,12 +132,12 @@
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => product.Weight)
-                
+
             </dd>
         }
 
     </dl>
-     
+
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |

@@ -3,14 +3,16 @@ using eCourier.Extention;
 using eCourier.Helper;
 using eCourier.Models;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDefaultIdentity<IdentityUser>(opt => opt.SignIn.RequireConfirmedAccount = true)
-  .AddRoles<IdentityRole>()
+builder.Services.AddDefaultIdentity<AppUser>(opt => opt.SignIn.RequireConfirmedAccount = true)
+   .AddRoles<AppRole>()
+                .AddRoleManager<RoleManager<AppRole>>()
+                .AddSignInManager<SignInManager<AppUser>>()
+                .AddRoleValidator<RoleValidator<AppRole>>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
@@ -66,11 +68,21 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    context.Database.Migrate();
+}
+
+
 app.Use(async (context, next) =>
-{      
-    
+{
+
     var principal = context.User;
-    var userManager = context.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
+    var userManager = context.RequestServices.GetRequiredService<UserManager<AppUser>>();
 
     var user = await userManager.GetUserAsync(principal);
 

@@ -1,4 +1,5 @@
-﻿using eCourier.Repositories.Abstraction;
+﻿using eCourier.Enums;
+using eCourier.Repositories.Abstraction;
 using eCourier.Repository;
 
 namespace eCourier.Extention
@@ -9,6 +10,7 @@ namespace eCourier.Extention
         {
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddSingleton<OrderStatus>();
         }
     }
 }

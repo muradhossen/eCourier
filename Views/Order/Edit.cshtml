@@ -1,7 +1,9 @@
 ﻿@model eCourier.Models.Order
+@inject eCourier.Enums.OrderStatus _orderStatus
 
 @{
     ViewData["Title"] = "Edit";
+     var status = _orderStatus.GetStatus();
 }
 
 <h1>Edit</h1>
@@ -13,6 +15,10 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="AppUserId" />
+            <input type="hidden" asp-for="RecipientId" />           
+            <input type="hidden" asp-for="ConsignmentNumber" />           
+            
             <div class="form-group">
                 <label asp-for="PlaceDate" class="control-label"></label>
                 <input asp-for="PlaceDate" class="form-control" />
@@ -25,19 +31,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
+                @Html.DropDownListFor(model => model.Status, status, "Select an option", new { @class = "form-control" })
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="TotalAmount" class="control-label"></label>
                 <input asp-for="TotalAmount" class="form-control" />
                 <span asp-validation-for="TotalAmount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DueAmount" class="control-label"></label>
-                <input asp-for="DueAmount" class="form-control" />
-                <span asp-validation-for="DueAmount" class="text-danger"></span>
-            </div>
+            </div> 
             <div class="form-group">
                 <label asp-for="PaidAmount" class="control-label"></label>
                 <input asp-for="PaidAmount" class="form-control" />

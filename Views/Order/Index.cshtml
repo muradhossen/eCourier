@@ -1,8 +1,10 @@
 ﻿@model eCourier.Helper.PagedList<Order>
+@inject eCourier.Enums.OrderStatus _orderStatus
 
 @{
- 
+
     var consignmentNumber = Context.Request.Query["ConsignmentNumber"].ToString();
+    bool isInAdminRole = User.IsInRole("Admin");   
 
 }
 
@@ -73,9 +75,18 @@
                         @Html.DisplayFor(modelItem => item.PaidAmount)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        @if (isInAdminRole)
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <span>|</span>
+                        }
+
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                        @if (isInAdminRole)
+                        {
+                            <span>|</span>
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        }
+                       
                     </td>
                 </tr>
             }

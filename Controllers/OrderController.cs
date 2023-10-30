@@ -8,6 +8,7 @@ using eCourier.Dto;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using eCourier.Extention;
 
 namespace eCourier.Controllers
 {
@@ -17,12 +18,12 @@ namespace eCourier.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IOrderRepository _orderRepository;
         private readonly ICustomerRepository _customerRepository;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
         public OrderController(ApplicationDbContext context
             , IOrderRepository orderRepository
             , ICustomerRepository customerRepository
-            , UserManager<IdentityUser> userManager)
+            , UserManager<AppUser> userManager)
         {
             _context = context;
             _orderRepository = orderRepository;
@@ -32,9 +33,10 @@ namespace eCourier.Controllers
 
         public async Task<IActionResult> Index([FromQuery] OrderCriteriaDto criteriaDto)
         {
-                   
 
-              var orders = await _orderRepository.GetOrdersByCriteriaAsync(criteriaDto);
+            criteriaDto.AppUserId = User.IsInRole("Customer") ? criteriaDto.AppUserId = User.GetUserId() : null;
+
+            var orders = await _orderRepository.GetOrdersByCriteriaAsync(criteriaDto);
             return View(orders);
         }
 
@@ -48,7 +50,7 @@ namespace eCourier.Controllers
 
             return View(order);
         }
-                
+
         public IActionResult Create()
         {
             return View();
@@ -59,13 +61,6 @@ namespace eCourier.Controllers
         {
             if (ModelState.IsValid)
             {
-                var customer = await _customerRepository.CreateOrUpdateCustomerAsync(order.Customer);
-                if (customer is null)
-                {
-                    return BadRequest("Failed to save customer info.Please try again!");
-                }
-                order.CustomerId = customer.Id;
-
                 var recipient = await _customerRepository.CreateOrUpdateCustomerAsync(order.Recipient);
                 if (recipient is null)
                 {
@@ -74,7 +69,7 @@ namespace eCourier.Controllers
                 order.RecipientId = recipient.Id;
 
                 order.Recipient = null;
-                order.Customer = null;
+                order.AppUserId = User.GetUserId();
 
                 await _orderRepository.CreateOrderAsync(order);
                 return RedirectToAction(nameof(Index));
@@ -82,7 +77,7 @@ namespace eCourier.Controllers
             return View(order);
         }
 
-        [Authorize(Policy ="AdminOnly")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Orders == null)
@@ -99,7 +94,7 @@ namespace eCourier.Controllers
         }
 
 
-        [Authorize(Policy = "AdminOnly")]
+        //[Authorize(Policy = "AdminOnly")]
         [HttpPost]
         public async Task<IActionResult> Edit(int id, [FromForm] Order order)
         {
@@ -120,7 +115,7 @@ namespace eCourier.Controllers
             return View(order);
         }
 
-        [Authorize(Policy ="AdminOnly")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Orders == null)
@@ -162,6 +157,6 @@ namespace eCourier.Controllers
         {
             var orderStatus = await _orderRepository.GetOrderStatusAsync(consigmentNumber);
             return View(orderStatus);
-        }
+        }         
     }
 }

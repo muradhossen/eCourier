@@ -5,7 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eCourier.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, int,
+        IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>,
+        IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -27,9 +29,27 @@ namespace eCourier.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Order>()
-                .HasOne(o => o.Customer)
-                .WithMany(c => c.CustomerOrders)
-                .OnDelete(DeleteBehavior.Restrict);  
+                .HasOne(o => o.AppUser)
+                .WithMany(c => c.Orders)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<AppUser>()
+              .HasMany(ur => ur.UserRoles)
+              .WithOne(u => u.User)
+              .HasForeignKey(ur => ur.UserId)
+              .IsRequired();
+
+            builder.Entity<AppRole>()
+                .HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.Role)
+                .HasForeignKey(ur => ur.RoleId)
+                .IsRequired();
+
+
+            builder.Entity<AppRole>()
+                .HasData(
+                new AppRole { Id = 1, Name = "Customer", NormalizedName = "CUSTOMER"},
+                new AppRole { Id = 2 , Name = "Admin", NormalizedName = "Admin"});
         }
     }
 }

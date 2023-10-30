@@ -1,7 +1,9 @@
 ﻿@model eCourier.Dto.OrderDto
+@inject eCourier.Enums.OrderStatus _orderStatus
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create order";
+    var status = _orderStatus.GetStatus();
 }
 
 <h1>Create</h1>
@@ -14,32 +16,6 @@
     <div class="row">
             <div class="col-md-4">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <h3>Customer Info</h3>
-
-                <div class="form-group">
-                    <label asp-for="Customer.Name" class="control-label"></label>
-                    <input asp-for="Customer.Name" class="form-control" />
-                    <span asp-validation-for="Customer.Name" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Customer.Phone" class="control-label"></label>
-                    <input asp-for="Customer.Phone" class="form-control" />
-                    <span asp-validation-for="Customer.Phone" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Customer.Email" class="control-label"></label>
-                    <input asp-for="Customer.Email" class="form-control" />
-                    <span asp-validation-for="Customer.Email" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Customer.Address" class="control-label"></label>
-                    <input asp-for="Customer.Address" class="form-control" />
-                    <span asp-validation-for="Customer.Address" class="text-danger"></span>
-                </div>
 
                 <hr />
 
@@ -78,20 +54,15 @@
                     <span asp-validation-for="ReachDate" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Status" class="control-label"></label>
-                    <input asp-for="Status" class="form-control" />
+                    <label asp-for="Status" class="control-label"></label>                   
+                @Html.DropDownListFor(model => model.Status, status, "Select an option", new { @class = "form-control" })
                     <span asp-validation-for="Status" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="TotalAmount" class="control-label"></label>
                     <input asp-for="TotalAmount" class="form-control" />
                     <span asp-validation-for="TotalAmount" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="DueAmount" class="control-label"></label>
-                    <input asp-for="DueAmount" class="form-control" />
-                    <span asp-validation-for="DueAmount" class="text-danger"></span>
-                </div>
+                </div> 
                 <div class="form-group">
                     <label asp-for="PaidAmount" class="control-label"></label>
                     <input asp-for="PaidAmount" class="form-control" />

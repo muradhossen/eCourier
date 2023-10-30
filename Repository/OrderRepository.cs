@@ -26,7 +26,7 @@ namespace eCourier.Repository
             var order = _mapper.Map<Order>(orderDto, opt => opt.AfterMap(async (src, des) =>
               {
                   des.RecipientId = orderDto.RecipientId;
-                  des.CustomerId = orderDto.CustomerId;
+                  des.AppUserId = orderDto.AppUserId;
                   des.ConsignmentNumber = await GenerateConsigmentNumber();
               }));
 
@@ -45,6 +45,11 @@ namespace eCourier.Repository
             var query = _dbContext.Orders
                 .AsQueryable()
                 .AsNoTracking();
+
+            if (criteriaDto.AppUserId is not null && criteriaDto.AppUserId > 0)
+            {
+                query = query.Where(c => c.AppUserId == criteriaDto.AppUserId);
+            }
 
             if (!string.IsNullOrWhiteSpace(criteriaDto.ConsignmentNumber))
             {
@@ -81,7 +86,7 @@ namespace eCourier.Repository
                  .Where(o => o.ConsignmentNumber == consigmentNumber)
                  .Select(o => new OrderStatusDto
                  {
-                     SenderName = o.Customer.Name,
+                     SenderName = o.AppUser.UserName,
                      RecipientName = o.Recipient.Name,
                      ReachDate = o.ReachDate,
                      Status = o.Status,
@@ -93,7 +98,7 @@ namespace eCourier.Repository
         public async Task<OrderDto> GetOrderDetails(int id)
         {
             var order = await _dbContext.Orders
-                 .Include(c => c.Customer)
+                 .Include(c => c.AppUser)
                  .Include(c => c.Recipient)
                  .Include(c => c.Products)
                  .AsNoTracking()
